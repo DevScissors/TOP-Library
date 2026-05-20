@@ -1,0 +1,22 @@
+.header-wrapper {
+  border-bottom: 1px solid black;
+  padding: 20px;
+  margin-bottom: 5vh;
+}
+
+.cards-wrapper {
+  display: grid;
+  grid-template: 1fr / repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.book-card {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
