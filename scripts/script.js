@@ -19,7 +19,7 @@ function Book(title, author, numPages, isRead) {
   this.title = title;
   this.author = author;
   this.numPages = numPages;
-  this.isRead = isRead;
+  this.isRead = false;
   this.id = crypto.randomUUID();
 }
 
@@ -39,7 +39,8 @@ function addBookToLibrary() {
   const titleValue = titleInput.value;
   const authorValue = authorInput.value;
   const numPagesValue = numPagesInput.value;
-  const isReadValue = readCheckbox.checked ? (isRead = "Yes") : (isRead = "No");
+  const isReadValue = readCheckbox.checked;
+
   // take params, create a book then store it in the array
   const book = new Book(titleValue, authorValue, numPagesValue, isReadValue);
   myLibrary.push(book);
@@ -65,11 +66,25 @@ function displayBook() {
 
     const cardBookRead = document.createElement("p");
     cardBookRead.className = "book-read";
-    cardBookRead.textContent = `Have you read the book: ${book.isRead}`;
 
-    cardDiv.append(cardBookTitle, cardBookAuthor, cardBookPages, cardBookRead);
+    const cardBookReadOption = document.createElement("input");
+    cardBookReadOption.type = "checkbox";
+    cardBookRead.textContent = `Have you read the book: ${toggleReadOption(book.isRead)}`;
+
+    cardDiv.append(
+      cardBookTitle,
+      cardBookAuthor,
+      cardBookPages,
+      cardBookRead,
+      cardBookReadOption,
+    );
     cardsWrapper.appendChild(cardDiv);
   });
+}
+
+function toggleReadOption(toggleRead) {
+  readCheckbox.checked = !readCheckbox.checked;
+  return readCheckbox.checked;
 }
 
 addBookBtn.addEventListener("click", () => {
@@ -91,12 +106,12 @@ numPagesInput.addEventListener("input", () => {
   submitBtn.disabled = !checkFormValues();
 });
 
-submitBtn.addEventListener("click", () => {
+submitBtn.addEventListener("click", (e) => {
   addBookToLibrary();
   displayBook();
   clearFormValues();
   modal.close();
-  // e.preventDefault();
+  e.preventDefault();
 });
 
 modal.addEventListener("close", () => {
