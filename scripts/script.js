@@ -51,6 +51,7 @@ function displayBook() {
   myLibrary.forEach((book, index) => {
     const cardDiv = document.createElement("div");
     cardDiv.className = "book-card";
+    cardDiv.setAttribute("data-index", book.id);
 
     const cardBookTitle = document.createElement("h2");
     cardBookTitle.className = "book-title";
@@ -83,8 +84,7 @@ function displayBook() {
 }
 
 function toggleReadOption(toggleRead) {
-  readCheckbox.checked = !readCheckbox.checked;
-  return readCheckbox.checked;
+  // toggle read option based off of data-index to match the book ID
 }
 
 addBookBtn.addEventListener("click", () => {
