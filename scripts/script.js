@@ -19,7 +19,7 @@ function Book(title, author, numPages, isRead) {
   this.title = title;
   this.author = author;
   this.numPages = numPages;
-  this.isRead = false;
+  this.isRead = isRead;
   this.id = crypto.randomUUID();
 }
 
@@ -70,27 +70,50 @@ function displayBook() {
 
     const cardBookReadOption = document.createElement("input");
     cardBookReadOption.type = "checkbox";
-    cardBookRead.textContent = `Have you read the book: ${toggleReadOption(book.isRead)}`;
+    cardBookReadOption.className = "read-checkbox-toggle";
+    cardBookReadOption.id = "readValue";
+    cardBookReadOption.checked = book.isRead;
 
-    cardDiv.append(
-      cardBookTitle,
-      cardBookAuthor,
-      cardBookPages,
-      cardBookRead,
-      cardBookReadOption,
-    );
+    const cardBookReadOptionLabel = document.createElement("label");
+    cardBookReadOptionLabel.htmlFor = "readValue";
+    cardBookReadOptionLabel.appendChild(document.createTextNode(""));
+    cardBookReadOptionLabel.textContent = cardBookReadOption.checked
+      ? (cardBookReadOptionLabel.textContent = "Yes")
+      : (cardBookReadOptionLabel.textContent = "No");
+    cardBookRead.textContent = `Have you read the book?`;
+
+    cardDiv.append(cardBookTitle, cardBookAuthor, cardBookPages, cardBookRead);
+    cardBookRead.append(cardBookReadOption);
+    cardBookRead.append(cardBookReadOptionLabel);
     cardsWrapper.appendChild(cardDiv);
   });
+  // toggleReadOption();
 }
 
-function toggleReadOption(toggleRead) {
-  // toggle read option based off of data-index to match the book ID
-}
+// function toggleReadOption() {
+//   // toggle read option based off of data-index to match the book ID
+//   const bookDivs = document.querySelectorAll(".book-card");
+//   const checkboxID = myLibrary.filter(
+//     (bookID) => (bookID = bookDivs.dataset.dataIndex),
+//   );
+//   console.log(checkboxID);
+// }
 
 addBookBtn.addEventListener("click", () => {
   // open form modal and disable submit button
   modal.showModal();
   submitBtn.disabled = true;
+});
+
+cardsWrapper.addEventListener("click", (e) => {
+  const readToggle = e.target.type === "checkbox";
+  myLibrary.forEach((book) => {
+    if (readToggle) {
+      book.isRead = true;
+    } else {
+      book.isRead = false;
+    }
+  });
 });
 
 // Check that each required input has a value, otherwise keep submit button disabled
