@@ -1,3 +1,17 @@
+const myLibrary = [];
+let bookCountTotal = 0;
+let bookReadCountTotal = 0;
+let bookUnreadCountTotal = 0;
+
+const bookCount = document.querySelector(".book-count");
+bookCount.textContent = `Number of books: ${bookCountTotal}`;
+
+const bookReadCount = document.querySelector(".book-read-count");
+bookReadCount.textContent = `Number of read books: ${bookReadCountTotal}`;
+
+const bookUnreadCount = document.querySelector(".book-unread-count");
+bookUnreadCount.textContent = `Number of unread books: ${bookUnreadCountTotal}`;
+
 const cardsWrapper = document.querySelector(".cards-wrapper");
 const addBookBtn = document.querySelector(".add-book-button");
 
@@ -9,8 +23,6 @@ const authorInput = document.querySelector(".book-author-input");
 const numPagesInput = document.querySelector(".book-pages-input");
 const readCheckbox = document.querySelector(".read-checkbox");
 const submitBtn = document.querySelector(".submit-btn");
-
-const myLibrary = [];
 
 function Book(title, author, numPages, isRead) {
   if (!new.target) {
@@ -67,37 +79,39 @@ function displayBook() {
 
     const cardBookRead = document.createElement("p");
     cardBookRead.className = "book-read";
+    cardBookRead.textContent = `Have you read the book?`;
 
     const cardBookReadOption = document.createElement("input");
     cardBookReadOption.type = "checkbox";
     cardBookReadOption.className = "read-checkbox-toggle";
-    cardBookReadOption.id = "readValue";
+    cardBookReadOption.id = `readValue-${book.id}`;
     cardBookReadOption.checked = book.isRead;
 
     const cardBookReadOptionLabel = document.createElement("label");
-    cardBookReadOptionLabel.htmlFor = "readValue";
+    cardBookReadOptionLabel.htmlFor = `readValue-${book.id}`;
+    cardBookReadOptionLabel.className = "toggle-label-text";
     cardBookReadOptionLabel.appendChild(document.createTextNode(""));
     cardBookReadOptionLabel.textContent = cardBookReadOption.checked
       ? (cardBookReadOptionLabel.textContent = "Yes")
       : (cardBookReadOptionLabel.textContent = "No");
-    cardBookRead.textContent = `Have you read the book?`;
 
     cardDiv.append(cardBookTitle, cardBookAuthor, cardBookPages, cardBookRead);
     cardBookRead.append(cardBookReadOption);
     cardBookRead.append(cardBookReadOptionLabel);
     cardsWrapper.appendChild(cardDiv);
   });
-  // toggleReadOption();
+  calculateBookLegend();
 }
 
-// function toggleReadOption() {
-//   // toggle read option based off of data-index to match the book ID
-//   const bookDivs = document.querySelectorAll(".book-card");
-//   const checkboxID = myLibrary.filter(
-//     (bookID) => (bookID = bookDivs.dataset.dataIndex),
-//   );
-//   console.log(checkboxID);
-// }
+function calculateBookLegend() {
+  // recompute totals from current library state
+  bookReadCountTotal = myLibrary.filter((b) => b.isRead).length;
+  bookUnreadCountTotal = myLibrary.length - bookReadCountTotal;
+  bookReadCount.textContent = `Number of read books: ${bookReadCountTotal}`;
+  bookUnreadCount.textContent = `Number of unread books: ${bookUnreadCountTotal}`;
+  bookCountTotal = myLibrary.length;
+  bookCount.textContent = `Number of books: ${bookCountTotal}`;
+}
 
 addBookBtn.addEventListener("click", () => {
   // open form modal and disable submit button
@@ -106,14 +120,18 @@ addBookBtn.addEventListener("click", () => {
 });
 
 cardsWrapper.addEventListener("click", (e) => {
-  const readToggle = e.target.type === "checkbox";
-  myLibrary.forEach((book) => {
-    if (readToggle) {
-      book.isRead = true;
-    } else {
-      book.isRead = false;
-    }
-  });
+  // only handle clicks on the read-checkbox-toggle inputs
+  if (!e.target.classList.contains("read-checkbox-toggle")) return;
+  const checkbox = e.target;
+  const label = checkbox.nextElementSibling;
+  const cardDiv = checkbox.closest(".book-card");
+  if (!cardDiv) return;
+  const bookId = cardDiv.getAttribute("data-index");
+  const book = myLibrary.find((b) => b.id === bookId);
+  if (!book) return;
+  book.isRead = checkbox.checked;
+  if (label) label.textContent = checkbox.checked ? "Yes" : "No";
+  calculateBookLegend();
 });
 
 // Check that each required input has a value, otherwise keep submit button disabled
