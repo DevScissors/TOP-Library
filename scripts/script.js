@@ -65,6 +65,16 @@ function displayBook() {
     cardDiv.className = "book-card";
     cardDiv.setAttribute("data-index", book.id);
 
+    const deleteBook = document.createElement("button");
+    deleteBook.className = "delete-book-btn";
+    deleteBook.textContent = "X";
+
+    deleteBook.addEventListener("click", () => {
+      cardsWrapper.removeChild(cardDiv);
+      myLibrary.splice(cardDiv, 1);
+      calculateBookLegend();
+    });
+
     const cardBookTitle = document.createElement("h2");
     cardBookTitle.className = "book-title";
     cardBookTitle.textContent = `Title: ${book.title}`;
@@ -95,7 +105,13 @@ function displayBook() {
       ? (cardBookReadOptionLabel.textContent = "Yes")
       : (cardBookReadOptionLabel.textContent = "No");
 
-    cardDiv.append(cardBookTitle, cardBookAuthor, cardBookPages, cardBookRead);
+    cardDiv.append(
+      deleteBook,
+      cardBookTitle,
+      cardBookAuthor,
+      cardBookPages,
+      cardBookRead,
+    );
     cardBookRead.append(cardBookReadOption);
     cardBookRead.append(cardBookReadOptionLabel);
     cardsWrapper.appendChild(cardDiv);
