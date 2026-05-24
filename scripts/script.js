@@ -1,4 +1,4 @@
-const myLibrary = [];
+let myLibrary = [];
 let bookCountTotal = 0;
 let bookReadCountTotal = 0;
 let bookUnreadCountTotal = 0;
@@ -60,7 +60,7 @@ function addBookToLibrary() {
 
 function displayBook() {
   cardsWrapper.innerHTML = ""; // optional: clear existing cards
-  myLibrary.forEach((book, index) => {
+  myLibrary.forEach(book => {
     const cardDiv = document.createElement("div");
     cardDiv.className = "book-card";
     cardDiv.setAttribute("data-index", book.id);
@@ -68,12 +68,11 @@ function displayBook() {
     const deleteBookBtn = document.createElement("button");
     deleteBookBtn.className = "delete-book-btn";
     deleteBookBtn.textContent = "X";
-    deleteBookBtn.dataset.tooltip = "Click to delete this book";
 
-    deleteBookBtn.addEventListener("click", () => {
-      cardsWrapper.removeChild(cardDiv);
-      myLibrary.splice(cardDiv, 1);
+    deleteBookBtn.addEventListener("click", (e) => {
+      myLibrary = myLibrary.filter(item => item.id !== book.id)
       calculateBookLegend();
+      displayBook();
     });
 
     const cardBookTitle = document.createElement("h2");
