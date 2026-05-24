@@ -65,11 +65,12 @@ function displayBook() {
     cardDiv.className = "book-card";
     cardDiv.setAttribute("data-index", book.id);
 
-    const deleteBook = document.createElement("button");
-    deleteBook.className = "delete-book-btn";
-    deleteBook.textContent = "X";
+    const deleteBookBtn = document.createElement("button");
+    deleteBookBtn.className = "delete-book-btn";
+    deleteBookBtn.textContent = "X";
+    deleteBookBtn.dataset.tooltip = "Click to delete this book";
 
-    deleteBook.addEventListener("click", () => {
+    deleteBookBtn.addEventListener("click", () => {
       cardsWrapper.removeChild(cardDiv);
       myLibrary.splice(cardDiv, 1);
       calculateBookLegend();
@@ -91,28 +92,38 @@ function displayBook() {
     cardBookRead.className = "book-read";
     cardBookRead.textContent = `Have you read the book?`;
 
+    const cardBookReadOptionLabel = document.createElement("label");
+    cardBookReadOptionLabel.htmlFor = `readValue-${book.id}`;
+    cardBookReadOptionLabel.className = "toggle-label-text";
+    cardBookReadOptionLabel.appendChild(document.createTextNode(""));
+
     const cardBookReadOption = document.createElement("input");
     cardBookReadOption.type = "checkbox";
     cardBookReadOption.className = "read-checkbox-toggle";
     cardBookReadOption.id = `readValue-${book.id}`;
     cardBookReadOption.checked = book.isRead;
+    cardBookReadOptionLabel.appendChild(cardBookReadOption);
 
-    const cardBookReadOptionLabel = document.createElement("label");
-    cardBookReadOptionLabel.htmlFor = `readValue-${book.id}`;
-    cardBookReadOptionLabel.className = "toggle-label-text";
-    cardBookReadOptionLabel.appendChild(document.createTextNode(""));
-    cardBookReadOptionLabel.textContent = cardBookReadOption.checked
-      ? (cardBookReadOptionLabel.textContent = "Yes")
-      : (cardBookReadOptionLabel.textContent = "No");
+    const cardBookReadOptionToggle = document.createElement("span");
+    cardBookReadOptionToggle.className = "slider round";
+    cardBookReadOptionLabel.appendChild(cardBookReadOptionToggle);
+
+
+    if (cardBookReadOption.checked) {
+      cardBookReadOptionToggle.textContent = "Yes";
+      cardBookReadOptionToggle.style.cssText = "width: 55px; color: white; font-size: 14px; padding-left: 5px;"
+    } else {
+      cardBookReadOptionToggle.textContent = "No";
+      cardBookReadOptionToggle.style.cssText = "width: 25px; color: black; font-size: 14px; padding-left: 35px;"
+    }
 
     cardDiv.append(
-      deleteBook,
+      deleteBookBtn,
       cardBookTitle,
       cardBookAuthor,
       cardBookPages,
       cardBookRead,
     );
-    cardBookRead.append(cardBookReadOption);
     cardBookRead.append(cardBookReadOptionLabel);
     cardsWrapper.appendChild(cardDiv);
   });
@@ -139,14 +150,20 @@ cardsWrapper.addEventListener("click", (e) => {
   // only handle clicks on the read-checkbox-toggle inputs
   if (!e.target.classList.contains("read-checkbox-toggle")) return;
   const checkbox = e.target;
-  const label = checkbox.nextElementSibling;
+  const slider = checkbox.nextElementSibling;
   const cardDiv = checkbox.closest(".book-card");
   if (!cardDiv) return;
   const bookId = cardDiv.getAttribute("data-index");
   const book = myLibrary.find((b) => b.id === bookId);
   if (!book) return;
   book.isRead = checkbox.checked;
-  if (label) label.textContent = checkbox.checked ? "Yes" : "No";
+  if (checkbox.checked) {
+    slider.textContent = "Yes";
+    slider.style.cssText = "width: 55px; color: white; font-size: 14px; padding-left: 5px;"
+  } else {
+    slider.textContent = "No";
+    slider.style.cssText = "width: 25px; color: black; font-size: 14px; padding-left: 35px;"
+  }
   calculateBookLegend();
 });
 

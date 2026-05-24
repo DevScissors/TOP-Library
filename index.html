@@ -1,50 +1,53 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./styles/style.css" />
-    <script src="./scripts/script.js" defer></script>
-    <title>My Book Library</title>
-  </head>
-  <body>
-    <div class="header-wrapper">
-      <h1 class="header-title">My Book Catalogue</h1>
-      <button type="button" class="add-book-button">Add Book to Library</button>
-      <div class="book-count-legend">
-        <p class="book-count">
-        </p>
-        <p class="book-read-count">
-        </p>
-        <p class="book-unread-count">
-        </p>
-      </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./styles/style.css" />
+  <script src="./scripts/script.js" defer></script>
+  <title>My Book Library</title>
+</head>
+
+<body>
+  <div class="header-wrapper">
+    <h1 class="header-title">My Book Catalogue</h1>
+    <div class="book-count-legend">
+      <p class="book-count">
+      </p>
+      <p class="book-read-count">
+      </p>
+      <p class="book-unread-count">
+      </p>
     </div>
-    <dialog id="addBookModal" closedby="any">
-      <form action="#" method="dialog" class="add-to-library-form">
-        <label for="bookTitleInput">
-          Title:
-        <input type="text" id="bookTitleInput" class="book-title-input" required/>
-        </label>
-        <label for="bookAuthorInput">
-          Author:
-          <input type="text" id="bookAuthorInput" class="book-author-input" required />
-        </label>
-        <label for="bookPagesInput">
-          Number of Pages:
-          <input type="number" id="bookPagesInput" class="book-pages-input" required />
-        </label>
-        <label for="hasBeenRead">
-          Have you read the book?
-          <input id="hasBeenRead" type="checkbox" class="read-checkbox" autocomplete="off">
-          Yes 
-          </input>
-        </label>
-        <button type="submit" class="submit-btn">Add To Library</button>
-      </form>
-    </dialog>
-    <div class="cards-wrapper">
-      </div>
-    </div>
-  </body>
+    <button type="button" class="add-book-button">Add Book to Library</button>
+  </div>
+  <dialog id="addBookModal" closedby="any">
+    <form action="#" method="dialog" class="add-to-library-form">
+      <label for="bookTitleInput">
+        Title:
+        <input type="text" id="bookTitleInput" class="book-title-input" required />
+      </label>
+      <label for="bookAuthorInput">
+        Author:
+        <input type="text" id="bookAuthorInput" class="book-author-input" required />
+      </label>
+      <label for="bookPagesInput">
+        Number of Pages:
+        <input type="number" id="bookPagesInput" class="book-pages-input" required />
+      </label>
+      <label for="hasBeenRead">
+        Have you read the book?
+        <input id="hasBeenRead" type="checkbox" class="read-checkbox" autocomplete="off">
+        Yes
+        </input>
+      </label>
+      <button type="submit" class="submit-btn">Add To Library</button>
+    </form>
+  </dialog>
+  <div class="cards-wrapper">
+  </div>
+  </div>
+</body>
+
 </html>
