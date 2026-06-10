@@ -24,15 +24,17 @@ const numPagesInput = document.querySelector(".book-pages-input");
 const readCheckbox = document.querySelector(".read-checkbox");
 const submitBtn = document.querySelector(".submit-btn");
 
-function Book(title, author, numPages, isRead) {
-  if (!new.target) {
-    throw Error("You must use the 'new' operator to call the constructor");
+class Book {
+  constructor(title, author, numPages, isRead) {
+    if (!new.target) {
+      throw Error("You must use the 'new' operator to call the constructor");
+    }
+    this.title = title;
+    this.author = author;
+    this.numPages = numPages;
+    this.isRead = isRead;
+    this.id = crypto.randomUUID();
   }
-  this.title = title;
-  this.author = author;
-  this.numPages = numPages;
-  this.isRead = isRead;
-  this.id = crypto.randomUUID();
 }
 
 function checkFormValues() {
@@ -60,7 +62,7 @@ function addBookToLibrary() {
 
 function displayBook() {
   cardsWrapper.innerHTML = ""; // optional: clear existing cards
-  myLibrary.forEach(book => {
+  myLibrary.forEach((book) => {
     const cardDiv = document.createElement("div");
     cardDiv.className = "book-card";
     cardDiv.setAttribute("data-index", book.id);
@@ -70,7 +72,7 @@ function displayBook() {
     deleteBookBtn.textContent = "X";
 
     deleteBookBtn.addEventListener("click", (e) => {
-      myLibrary = myLibrary.filter(item => item.id !== book.id)
+      myLibrary = myLibrary.filter((item) => item.id !== book.id);
       calculateBookLegend();
       displayBook();
     });
@@ -107,13 +109,14 @@ function displayBook() {
     cardBookReadOptionToggle.className = "slider round";
     cardBookReadOptionLabel.appendChild(cardBookReadOptionToggle);
 
-
     if (cardBookReadOption.checked) {
       cardBookReadOptionToggle.textContent = "Yes";
-      cardBookReadOptionToggle.style.cssText = "width: 55px; color: white; font-size: 14px; padding-left: 5px;"
+      cardBookReadOptionToggle.style.cssText =
+        "width: 55px; color: white; font-size: 14px; padding-left: 5px;";
     } else {
       cardBookReadOptionToggle.textContent = "No";
-      cardBookReadOptionToggle.style.cssText = "width: 25px; color: black; font-size: 14px; padding-left: 35px;"
+      cardBookReadOptionToggle.style.cssText =
+        "width: 25px; color: black; font-size: 14px; padding-left: 35px;";
     }
 
     cardDiv.append(
@@ -158,10 +161,12 @@ cardsWrapper.addEventListener("click", (e) => {
   book.isRead = checkbox.checked;
   if (checkbox.checked) {
     slider.textContent = "Yes";
-    slider.style.cssText = "width: 55px; color: white; font-size: 14px; padding-left: 5px;"
+    slider.style.cssText =
+      "width: 55px; color: white; font-size: 14px; padding-left: 5px;";
   } else {
     slider.textContent = "No";
-    slider.style.cssText = "width: 25px; color: black; font-size: 14px; padding-left: 35px;"
+    slider.style.cssText =
+      "width: 25px; color: black; font-size: 14px; padding-left: 35px;";
   }
   calculateBookLegend();
 });
